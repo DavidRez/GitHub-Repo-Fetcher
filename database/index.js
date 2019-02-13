@@ -36,11 +36,13 @@ let save = (obj, cb) => {
     if (err)
       console.log(err);
     else {
+      //check if repo exists already
       if (results.length > 0) {
         if (results[0]['repo_id'] === obj.id) {
           db.collection('repos').update({repo_id : obj.id}, {$set:{updated_at: obj.updated_at,forks: obj.forks}});
         }
       }
+      //add new repo to database
       else {
         newRepo.save({upsert:true})
         .then((data)=>{
@@ -55,6 +57,7 @@ let save = (obj, cb) => {
 }
 
 let find = (cb) => {
+  //pull the top 25 repos from database  based on the amount of forks
   db.collection('repos').find().limit(25).sort({forks:-1}).toArray((err,results) => {
     if(err)
       cb(err,null);

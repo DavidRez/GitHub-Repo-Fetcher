@@ -12,7 +12,7 @@ class App extends React.Component {
     this.search = this.search.bind(this);
 
     this.state = {
-      repos: []
+      repos: [] //hold data for each repo pulled from database
     }
   }
 
@@ -21,6 +21,7 @@ class App extends React.Component {
   }
 
   top() {
+    // get top 25 repos from database
     $.ajax({
       url : 'http://localhost:1128/repos',
       type : 'GET',
@@ -36,7 +37,7 @@ class App extends React.Component {
   }
 
   search(term) {
-    console.log(`${term} was searched`);
+    // get repos from github api for username entered
     $.ajax({
       url : 'http://localhost:1128/repos',
       type : 'POST',
@@ -54,7 +55,10 @@ class App extends React.Component {
   render () {
     return (<div>
       <h1>GitHub Repo Fetcher</h1>
+      {/* search box */}
       <Search onSearch={this.search}/>
+
+      {/* list of repos */}
       <RepoList repos={this.state.repos}/>
 
     </div>)
