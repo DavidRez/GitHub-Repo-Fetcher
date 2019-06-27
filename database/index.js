@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://localhost/repos', {useMongoClient: true});
 
 let db = mongoose.connection;
@@ -20,39 +21,49 @@ let repoSchema = mongoose.Schema({
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (obj, cb) => {
-  // save a repo or repos to the MongoDB
-  let newRepo = new Repo({
-    repo_id: obj.id,
-    repo_name: obj.name,
-    user_id: obj.owner.id,
-    user_login: obj.owner.login,
-    html_url: obj.html_url,
-    updated_at: obj.updated_at,
-    forks: obj.forks
-  });
+let save = async (repos) => {
+  // save repos to the MongoD
+  await Promise.all(repos.map(async obj => {
+    let newRepo = new Repo({
+      repo_id: obj.id,
+      repo_name: obj.name,
+      user_id: obj.owner.id,
+      user_login: obj.owner.login,
+      html_url: obj.html_url,
+      updated_at: obj.updated_at,
+      forks: obj.forks
+    });
 
-  db.collection('repos').find({repo_id: obj.id}).toArray((err,results)=>{
-    if (err)
-      console.log(err);
-    else {
-      //check if repo exists already
-      if (results.length > 0) {
-        if (results[0]['repo_id'] === obj.id) {
-          db.collection('repos').update({repo_id : obj.id}, {$set:{updated_at: obj.updated_at,forks: obj.forks}});
+    return new Promise((resolve,reject) => {
+      db.collection('repos').find({repo_id: obj.id}).toArray((err,results)=>{
+        if (err)
+          reject(err);
+        else {
+          //check if repo exists already
+          if (results.length > 0) {
+            if (results[0]['repo_id'] === obj.id) {
+              console.log('updating repo')
+              db.collection('repos').update({repo_id : obj.id}, {$set:{updated_at: obj.updated_at,forks: obj.forks}})
+              .then((result) => resolve(result))
+              .catch((error) => reject(error))
+            }
+          }
+          //add new repo to database
+          else {
+            console.log('saving new repo')
+            newRepo.save({upsert:true})
+            .then((result) => resolve(result))
+            .catch((error) => reject(error))
+          }
         }
-      }
-      //add new repo to database
-      else {
-        newRepo.save({upsert:true})
-        .then((data)=>{
-          cb(null,data);
-        })
-        .catch(err => {
-          cb(err,null);
-        });
-      }
-    }
+      });
+    });
+  }))
+  .then(() => {
+    console.log('db:all repos saved')
+  })
+  .catch((err) => {
+    return err;
   });
 }
 

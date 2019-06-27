@@ -1,7 +1,7 @@
 const request = require('request');
 const config = require('../config.js');
 
-let getReposByUsername = (username, cb) => {
+let getReposByUsername = (username) => {
   // use the request module to request repos for a 
   // specific user from the github API
   let options = {
@@ -11,16 +11,17 @@ let getReposByUsername = (username, cb) => {
       'Authorization': `token ${config.TOKEN}`
     }
   };
-
-  request(options, (err, res, body) => {
-    if (!err && res.statusCode === 200) {
-      let data = JSON.parse(body);
-      cb(null,data);
-    }
-    else {
-      cb(err,null);
-    }
-  });
+  return new Promise((success, failure) => {
+    request(options, (err, res, body) => {
+        if (!err && res.statusCode === 200) {
+          let data = JSON.parse(body);
+          success(data);
+        }
+        else {
+          failure(err);
+        }
+      });
+  })
 }
 
 module.exports.getReposByUsername = getReposByUsername;
