@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -22,41 +22,28 @@ class App extends React.Component {
 
   top() {
     // get top 25 repos from database
-    $.ajax({
-      url : 'http://localhost:1128/repos',
-      type : 'GET',
-      contentType: 'application/json',
-      success: result => {
-        console.log('react getting top 25');
-        this.setState({repos:result});
-      },
-      error: err => {
-        console.log('error getting top 25');
-      }
-    });
+    axios.get('http://localhost:1128/repos')
+    .then((result) => {
+      if (result.data.length > 0)
+        this.setState({repos:result.data});
+    })
+    .catch(() => console.log('error getting'))
   }
 
   search(term) {
-    // get repos from github api for username entered
-    $.ajax({
-      url : 'http://localhost:1128/repos',
-      type : 'POST',
-      data: term,
-      success: result => {
-        console.log('react success');
-        this.top();
-      },
-      error: err => {
-        console.log('error from react');
-      }
-    });
+    //adding repos of github user
+    axios.post('http://localhost:1128/repos', term)
+    .then(() => {
+      this.top();
+    })
+    .catch(() => console.log('error posting'))
   }
 
   render () {
     return (<div>
       <h1>GitHub Repo Fetcher</h1>
       {/* search box */}
-      <Search onSearch={this.search}/>
+      <Search onSearch={this.search} />
 
       {/* list of repos */}
       <RepoList repos={this.state.repos}/>
