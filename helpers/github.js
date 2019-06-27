@@ -1,5 +1,6 @@
+require('dotenv').config();
+
 const request = require('request');
-const config = require('../config.js');
 
 let getReposByUsername = (username) => {
   // use the request module to request repos for a 
@@ -8,7 +9,7 @@ let getReposByUsername = (username) => {
     url: `https://api.github.com/users/${username}/repos`,
     headers: {
       'User-Agent': 'request',
-      'Authorization': `token ${config.TOKEN}`
+      'Authorization': `token ${process.env.TOKEN}`
     }
   };
   return new Promise((success, failure) => {
