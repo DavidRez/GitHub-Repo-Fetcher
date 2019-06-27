@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "react-dev": "webpack -d --watch",
-    "start": "nodemon server/index.js",
-    "cloud": "nodemon server/cloud.js"
+    "local": "node server/index.js",
+    "cloud": "node server/cloud.js",
+    "watch-local": "nodemon server/index.js",
+    "watch-cloud": "nodemon server/cloud.js"
   },
   "author": "David Ramirez",
   "license": "ISC",
