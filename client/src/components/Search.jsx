@@ -18,9 +18,10 @@ class Search extends React.Component {
     });
   }
 
-  search() {
+  search(e) {
     this.props.onSearch(this.state.term);
-    document.getElementsByTagName('form').reset();
+    this.setState({term:''});
+    e.preventDefault();
   }
 
   render() {
@@ -28,7 +29,7 @@ class Search extends React.Component {
     <div id="searchbox">
       Enter a github username: <br/>
       <form>
-      <input value={this.state.term} onChange={this.onChange}/> <br/>
+      <input value={this.state.term} onChange={this.onChange} /> <br/>
       <button onClick={this.search}> Add Repos </button>
       </form>
     </div>)
