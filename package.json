@@ -6,7 +6,7 @@
   "scripts": {
     "react-dev": "webpack -d --watch",
     "local": "node server/index.js",
-    "cloud": "node server/cloud.js",
+    "start": "node server/cloud.js",
     "watch-local": "nodemon server/index.js",
     "watch-cloud": "nodemon server/cloud.js"
   },
