@@ -8,7 +8,7 @@ body {
 }
 #app {
   box-sizing: border-box;
-  width: 650px;
+  width: 40em;
   margin: 0 auto;
 }
 h1 {
@@ -21,22 +21,20 @@ h1 {
   background-color: #2F3C4F;
   box-sizing: border-box;
   margin: 0 auto;
-  justify-content: space-around;
-  width: 450px;
-  padding: 15px;
+  width: 24em;
+  padding: 1em;
   color: white;
-  font-size: 20px;
+  font-size: 1.25em;
 }
 input {
   background-color: #54647C;
   box-sizing: border-box;
-  border: 0px solid;
+  border: none;
   width: 100%;
-  height: 40px;
-  padding: 5px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: 20px;
+  height: 2.5em;
+  padding: .3125em;
+  margin: .62em 0 .62em 0;
+  font-size: 1.25em;
   color:white;
 
 }
@@ -45,11 +43,11 @@ input {
 }
 button {
   width: 100%;
-  height: 40px;
+  height: 2.5em;
   background-color: #40C08A;
-  border: 0px solid;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
+  border: none;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1em;
   font-weight: bold;
   margin: 0 auto;
   color:white;
@@ -57,62 +55,51 @@ button {
 
 /********LIST********/
 #list {
-  box-sizing: border-box;
-  width: 450px;
-  margin-top: 40px;
-  margin-bottom: 0;
-  margin-right: auto;
-  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  width: 28em;
+  margin: 2.5em auto;
 }
-table, tbody {
+.repo {
+  width: 95%;
+  height: 3.5em;
   margin: 0 auto;
-  width: inherit;
-  padding: 0px;
+  padding: 1.2em 0;
+  letter-spacing: .065em;
   color: white;
-  letter-spacing: 1px;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-tr {
-    width: 300px;
-    height: 90px;
-    padding: 10px;
-    margin: 0;
+.repo:not(:last-child) {
+  border-bottom: .03em solid #2F3C4F;
 }
-td {
-  width: 300px;
-  padding: 10px;
+.repo .top {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between; 
+}
+.top .reponame {
+  width: max-content;
+}
+.top .reponum {
+  width: max-content;
+}
+.repo .bottom {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between; 
+}
+.bottom .forks {
+  width: max-content;
+}
+.bottom .username {
+  width: max-content;
 }
 a:active, a:link, a {
   text-decoration: none;
   color: #4BC1DE;
-  font-size: 20px;
-}
-table .reponame {
-  margin:0;
-  height: 35px;
-  width: 85%;
-  text-align: left;
-  float:left;
-}
-table .reponum {
-  margin:0;
-  height: 35px;
-  width: 15%;
-  vertical-align: text-bottom; 
-  text-align: right;
-  float:right;
-}
-table .forks {
-  margin:0;
-  height: 30px;
-  text-align: right;
-  vertical-align: text-bottom; 
-  float:right;
-}
-table .username {
-  margin:0;
-  height: 30px;
-  text-align: left;
-  vertical-align: text-bottom; 
-  border-bottom: white;
+  font-size: 1.25em;
 }
